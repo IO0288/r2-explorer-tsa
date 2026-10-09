@@ -5,7 +5,7 @@ const explorer = R2Explorer({
 	readonly: false,
 	emailRouting: false,
 	buckets: {
-		tsa: {
+		bucket: {
 			publicUrl: "https://tsa.cdn.z02.dev",
 		},
 	},
