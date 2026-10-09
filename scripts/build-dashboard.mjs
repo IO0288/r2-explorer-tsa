@@ -100,6 +100,28 @@ replaceOnce('key:4,clickable:"",onClick:m.copyPublicUrl',
 replaceOnce('createTextVNode("Copy Public URL")', 'createTextVNode("获取直链")');
 replaceOnce('createTextVNode("Direct link via public domain")', 'createTextVNode("直接下载文件，沿用当前访问权限")');
 
+// Remove share management and the complete share dialog (passwords, expiry,
+// download limits), including references in both file context menus.
+const manageStart = source.indexOf('createVNode(QBtn,{flat:"",dense:"",icon:"link",color:"primary",label:"Manage Shares"');
+const manageEnd = source.indexOf(']),tsaFileSelectionToolbar(u)', manageStart);
+if (manageStart < 0 || manageEnd < 0) throw new Error("Cannot locate share management controls.");
+replaceOnce(source.slice(manageStart, manageEnd), "");
+const shareMenuStart = source.indexOf('g.prop.row.type==="file"?withDirectives((openBlock(),createBlock(QItem,{key:3,clickable:"",onClick:m.createShareLink');
+const shareMenuEnd = source.indexOf('withDirectives((openBlock(),createBlock(QItem,{clickable:"",onClick:m.copyInternalLink', shareMenuStart);
+if (shareMenuStart < 0 || shareMenuEnd < 0) throw new Error("Cannot locate the create-share menu item.");
+replaceOnce(source.slice(shareMenuStart, shareMenuEnd), "");
+replaceOnce('createShareLink:function(){this.$emit("createShareLink",this.prop.row)},', "");
+const shareListener = ',onCreateShareLink:u.$refs.shareFile.openCreateShare';
+if (source.split(shareListener).length !== 3) throw new Error("Cannot locate both share event listeners.");
+source = source.replaceAll(shareListener, "");
+replaceOnce('FilePreview,ShareFile}', 'FilePreview}');
+replaceOnce(',w=resolveComponent("share-file")', "");
+replaceOnce(',createVNode(w,{ref:"shareFile"},null,512)', "");
+const shareComponentStart = source.indexOf(',ShareFile_vue_vue_type_style_index_0_scoped_true_lang');
+const shareComponentEnd = source.indexOf(',ElementType;', shareComponentStart);
+if (shareComponentStart < 0 || shareComponentEnd < 0) throw new Error("Cannot locate the share dialog component.");
+replaceOnce(source.slice(shareComponentStart, shareComponentEnd + ',ElementType;'.length), ';var ElementType;');
+
 const customizedAsset = `index.${createHash("sha256").update(source).digest("hex").slice(0, 12)}.js`;
 await rm(output, { recursive: true, force: true });
 await cp(upstream, output, { recursive: true });

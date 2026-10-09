@@ -97,6 +97,10 @@ The selection UI is maintained in `dashboard/file-management.js`, and download
 URL generation in `dashboard/direct-links.mjs`. Run `npm test` to verify URL
 encoding.
 
+This internal deployment removes R2 Explorer sharing features: the share
+management button, share creation menu, share-password dialog, and share API
+routes are disabled. Existing `/share/...` URLs no longer resolve.
+
 `scripts/build-dashboard.mjs` copies the dependency's dashboard into
 `dist/dashboard` and customizes the layout without changing `node_modules`.
 `npm run dev` and `npm run deploy` rebuild it automatically. When invoking

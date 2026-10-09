@@ -1,6 +1,7 @@
 import { R2Explorer } from "r2-explorer";
+import { isShareRoute } from "./share-routes.mjs";
 
-export default R2Explorer({
+const explorer = R2Explorer({
 	readonly: false,
 	emailRouting: false,
 
@@ -8,3 +9,13 @@ export default R2Explorer({
 	// https://r2explorer.com/getting-started/security/
 	// cfAccessTeamName: "my-team-name",
 });
+
+export default {
+	...explorer,
+	fetch(request: Request, env: unknown, context: ExecutionContext) {
+		if (isShareRoute(request.url)) {
+			return Response.json({ message: "Not found" }, { status: 404 });
+		}
+		return explorer.fetch(request, env, context);
+	},
+};
