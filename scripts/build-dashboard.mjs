@@ -93,8 +93,6 @@ replaceOnce('["rows","columns","loading","onRowDblclick","onRowClick"]',
 replaceOnce('"table-class":"file-list"', '"table-class":"file-list tsa-file-selection"');
 
 // Both the ellipsis menu and the right-click menu use FileContextMenu.
-replaceOnce('g.prop.row.type==="file"&&m.bucketPublicUrl?withDirectives',
-	'g.prop.row.type==="file"?withDirectives');
 replaceOnce('key:4,clickable:"",onClick:m.copyPublicUrl',
 	'key:4,clickable:"",onClick:()=>tsaShowDirectLinks(u,[g.prop.row])');
 replaceOnce('createTextVNode("Copy Public URL")', 'createTextVNode("获取直链")');

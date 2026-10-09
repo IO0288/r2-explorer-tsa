@@ -4,12 +4,14 @@ function tsaShowDirectLinks(component, rows) {
 	try {
 		const files = rows.filter((row) => row.type === "file");
 		if (!files.length) throw new Error("请先选择文件。");
+		const bucket = component.mainStore.buckets.find((item) => item.name === component.selectedBucket);
+		if (!bucket?.publicUrl) throw new Error("当前存储桶未配置公开访问域名。");
 		const links = files.map((row) => tsaDirectLink(
-			component.mainStore.serverUrl, component.selectedBucket, row.key,
+			bucket.publicUrl, row.key,
 		)).join("\n");
 		component.q.dialog({
 			title: `文件直链（${files.length}）`,
-			message: "每行一个链接，沿用当前 Worker 的访问权限。也可选中文本手动复制。",
+			message: "每行一个公开访问链接。也可选中文本手动复制。",
 			prompt: { model: links, type: "textarea", readonly: true, autogrow: true },
 			ok: { label: "复制全部" },
 			cancel: { label: "关闭", flat: true },

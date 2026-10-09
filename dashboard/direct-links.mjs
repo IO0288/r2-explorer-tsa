@@ -1,9 +1,8 @@
-// R2 Explorer's download endpoint accepts a UTF-8 base64 object key.
-export function tsaDirectLink(serverUrl, bucket, key) {
-	if (typeof key !== "string" || !key || typeof bucket !== "string" || !bucket) {
-		throw new Error("缺少存储桶或文件路径，无法生成直链。");
+// Public bucket domains serve objects by their URL path.
+export function tsaDirectLink(publicUrl, key) {
+	if (typeof publicUrl !== "string" || !publicUrl.trim() || typeof key !== "string" || !key) {
+		throw new Error("缺少公开访问域名或文件路径，无法生成直链。");
 	}
-	const bytes = new TextEncoder().encode(key);
-	const encodedKey = btoa(Array.from(bytes, (byte) => String.fromCharCode(byte)).join(""));
-	return `${serverUrl.replace(/\/+$/, "")}/api/buckets/${encodeURIComponent(bucket)}/${encodeURIComponent(encodedKey)}`;
+	const encodedKey = key.split("/").map(encodeURIComponent).join("/");
+	return `${publicUrl.replace(/\/+$/, "")}/${encodedKey}`;
 }

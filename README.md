@@ -88,10 +88,11 @@ search, or listing changes.
 
 Use **批量获取直链** for selected files, or **获取直链** in a file's ellipsis
 menu. The dialog lists one download URL per line and supports **复制全部** or
-manual copying. These URLs use the current Worker's `/api/buckets/…` download
-endpoint and retain its access controls. They do not create public share links
-or bypass authentication. Object keys are UTF-8/base64 encoded and escaped for
-safe URLs, including Chinese names, spaces, and special characters.
+manual copying. These URLs use the selected bucket's configured `publicUrl`
+domain and follow that domain's public access settings. Configure
+`buckets.<name>.publicUrl` in `src/index.ts` before using this action. Object key
+path segments are escaped for safe URLs, including Chinese names, spaces, and
+special characters.
 
 The selection UI is maintained in `dashboard/file-management.js`, and download
 URL generation in `dashboard/direct-links.mjs`. Run `npm test` to verify URL
