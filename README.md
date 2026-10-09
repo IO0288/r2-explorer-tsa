@@ -66,7 +66,7 @@ A live public deployment of this template is available at [https://demo.r2explor
    ```
 3. Deploy the project!
    ```bash
-   npx wrangler deploy
+   npm run deploy
    ```
 4. Monitor your worker
    ```bash
@@ -75,8 +75,36 @@ A live public deployment of this template is available at [https://demo.r2explor
 
 ## Next steps
 
-By default this template is **readonly**.
+This instance enables file uploads and management (`readonly: false`) and disables
+Email Explorer (`emailRouting: false`) in `src/index.ts`.
 
-in order for you to enable editing, just update the `readonly` flag in your `src/index.ts` file.
+The left sidebar is removed. Upload files, upload folders, create folders, and
+create files are available in a responsive toolbar above the file browser.
 
-Its highly recommended that you setup security first, [learn more here](https://r2explorer.com/getting-started/security/).
+File rows have checkboxes for multiple selection. The header checkbox selects
+all currently loaded files (excluding folders); loading additional pages does
+not automatically select new files. Selection is cleared when the directory,
+search, or listing changes.
+
+Use **批量获取直链** for selected files, or **获取直链** in a file's ellipsis
+menu. The dialog lists one download URL per line and supports **复制全部** or
+manual copying. These URLs use the current Worker's `/api/buckets/…` download
+endpoint and retain its access controls. They do not create public share links
+or bypass authentication. Object keys are UTF-8/base64 encoded and escaped for
+safe URLs, including Chinese names, spaces, and special characters.
+
+The selection UI is maintained in `dashboard/file-management.js`, and download
+URL generation in `dashboard/direct-links.mjs`. Run `npm test` to verify URL
+encoding.
+
+`scripts/build-dashboard.mjs` copies the dependency's dashboard into
+`dist/dashboard` and customizes the layout without changing `node_modules`.
+`npm run dev` and `npm run deploy` rebuild it automatically. When invoking
+Wrangler directly, run `npm run build:dashboard` first.
+
+The customization uses the compiled component boundaries in `r2-explorer` 1.2.0.
+After upgrading this dependency, review the build script if the upstream layout
+changes; an unmatched component causes the build to fail explicitly.
+
+Configure authentication before deploying a writable instance,
+[learn more here](https://r2explorer.com/getting-started/security/).

@@ -193,6 +193,7 @@ dist
 
 ### Wrangler ###
 .wrangler/
+.playwright-mcp/
 .env*
 !.env.example
 .dev.vars*

@@ -24,6 +24,10 @@
 	},
 	"private": true,
 	"scripts": {
+		"test": "node --test tests/*.test.mjs",
+		"build:dashboard": "node scripts/build-dashboard.mjs",
+		"predev": "npm run build:dashboard",
+		"predeploy": "npm run build:dashboard",
 		"cf-typegen": "wrangler types",
 		"deploy": "wrangler deploy",
 		"dev": "wrangler dev"

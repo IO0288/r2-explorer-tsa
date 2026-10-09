@@ -1,0 +1,58 @@
+/* Use the same bounded columns for headers and rows. The upstream flex table
+   otherwise lets content/padding change individual column widths. */
+.tsa-file-selection {
+	width: 100%;
+	max-width: 100%;
+}
+
+.tsa-file-selection tr {
+	display: grid;
+	grid-template-columns: 52px minmax(0, 1fr) 145px 100px 64px;
+	width: 100%;
+}
+
+.tsa-file-selection th,
+.tsa-file-selection td {
+	width: 100%;
+	min-width: 0;
+	max-width: 100%;
+	box-sizing: border-box;
+}
+
+.tsa-file-selection th:first-of-type,
+.tsa-file-selection td:first-of-type {
+	text-align: center;
+	padding: 7px 12px;
+}
+
+.tsa-file-selection th:nth-of-type(2),
+.tsa-file-selection td:nth-of-type(2) {
+	display: block;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	text-align: left;
+}
+
+.tsa-file-selection th:last-of-type,
+.tsa-file-selection td:last-of-type {
+	padding: 7px 12px;
+	text-align: center;
+}
+
+@media (max-width: 600px) {
+	.tsa-file-selection tr {
+		grid-template-columns: 44px minmax(0, 1fr) 80px 48px;
+	}
+
+	.tsa-file-selection th:nth-of-type(3),
+	.tsa-file-selection td:nth-of-type(3) {
+		display: none;
+	}
+
+	.tsa-file-selection th:last-of-type,
+	.tsa-file-selection td:last-of-type {
+		padding-right: 4px;
+		padding-left: 4px;
+	}
+}
