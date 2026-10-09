@@ -4,6 +4,11 @@ import { isShareRoute } from "./share-routes.mjs";
 const explorer = R2Explorer({
 	readonly: false,
 	emailRouting: false,
+	buckets: {
+		tsa: {
+			publicUrl: "https://tsa.cdn.z02.dev",
+		},
+	},
 
 	// Learn more how to secure your R2 Explorer instance:
 	// https://r2explorer.com/getting-started/security/
