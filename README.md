@@ -102,6 +102,19 @@ This internal deployment removes R2 Explorer sharing features: the share
 management button, share creation menu, share-password dialog, and share API
 routes are disabled. Existing `/share/...` URLs no longer resolve.
 
+The management site and its Worker API are protected with Basic Auth. The
+credentials are read from Cloudflare Worker Secrets at request time and are
+not stored in this repository. Configure them before deploying:
+
+```bash
+npx wrangler secret put R2_EXPLORER_USERNAME
+npx wrangler secret put R2_EXPLORER_PASSWORD
+```
+
+The configured password protects the R2 Explorer management site and API. The
+bucket's public file domain (`https://tsa.cdn.z02.dev`) remains independently
+public and is not covered by this Worker authentication.
+
 `scripts/build-dashboard.mjs` copies the dependency's dashboard into
 `dist/dashboard` and customizes the layout without changing `node_modules`.
 `npm run dev` and `npm run deploy` rebuild it automatically. When invoking
